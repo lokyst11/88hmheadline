@@ -36,7 +36,9 @@
    </el-aside>
    <!-- 大容器包含头部和中间 -->
    <el-container>
-     <el-header>头部</el-header>
+     <el-header>
+       <layoutHeader></layoutHeader>
+     </el-header>
      <el-main>中间
        <!-- 二级路由容器 -->
        <router-view></router-view>
@@ -46,9 +48,11 @@
 </template>
 
 <script>
+import layoutHeader from '../components/header'
 export default {
   name: 'home',
   components: {
+    'layoutHeader': layoutHeader
   }
 }
 </script>
