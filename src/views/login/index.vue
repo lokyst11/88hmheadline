@@ -72,8 +72,8 @@ export default {
             method: 'post'
           }).then(result => {
             console.log(result)
-            window.localStorage.setItem('user-token', result)
-            this.$router.push('/home')
+            window.localStorage.setItem('user-token', result.data.data.token)
+            this.$router.push('/layout')
           }).catch(() => {
             this.$message({
               type: 'warning',
