@@ -11,12 +11,12 @@
        <!-- 一级菜单 -->
       <el-menu-item index='/'>首页</el-menu-item>
       <!-- 二级菜单 -->
-      <el-submenu>
+      <el-submenu index='1'>
         <!-- 具名插槽不给无法显示 -->
         <template slot="title">内容管理</template>
         <!-- 匿名插槽 -->
         <el-menu-item index='/publish'>发布文章</el-menu-item>
-        <el-menu-item>内容列表</el-menu-item>
+        <el-menu-item index='/artide'>内容列表</el-menu-item>
         <el-menu-item>评论列表</el-menu-item>
         <el-menu-item>素材管理</el-menu-item>
       </el-submenu>

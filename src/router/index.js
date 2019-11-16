@@ -5,6 +5,7 @@ import Login from '../views/login'
 import homePage from '../views/homepage/index.vue'
 import publish from '../views/publish/index.vue'
 import artide from '../views/artide/index.vue'
+import NProgress from 'nprogress'
 
 Vue.use(VueRouter)
 
@@ -49,8 +50,7 @@ const router = new VueRouter({
 // next：他是一个方法，用于路由的放行
 // 判断用户的登录状态，有就通过
 router.beforeEach((to, from, next) => {
-  console.log('所有访问的都要进过这里')
-
+  NProgress.start()
   // 1.访问登录页直接通过
   if (to.path === '/login') {
     next()
@@ -67,7 +67,15 @@ router.beforeEach((to, from, next) => {
   } else {
     // 2.3没有，跳到登录页
     next('/login')
+
+    // 如果在非登陆状态下，这里就是手动终止进度条，否者进度条不会停止
+    NProgress.done()
   }
+})
+
+router.afterEach((to, from) => {
+  console.log('afterEach 导航完成')
+  NProgress.done()
 })
 
 export default router
