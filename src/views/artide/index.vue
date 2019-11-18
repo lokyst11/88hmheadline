@@ -35,7 +35,8 @@
         type="daterange"
         range-separator="至"
         start-placeholder="开始日期"
-        end-placeholder="结束日期">
+        end-placeholder="结束日期"
+        value-format="yyyy-MM-dd">
       </el-date-picker>
     </el-form-item>
     <el-form-item>
@@ -104,9 +105,9 @@
         <el-table-column
           prop="address"
           label="操作">
-          <template>
-            <el-button type="danger" size="mini">删除</el-button>
-            <el-button type="primary" size="mini">编辑</el-button>
+          <template slot-scope="scope">
+            <el-button type="danger" @click="onDelete(scope.row.id)">删除</el-button>
+            <el-button type="primary">编辑</el-button>
           </template>
         </el-table-column>
       </el-table>
@@ -137,12 +138,12 @@ export default {
     // 过滤数据
       filterForm: {
         status: null,
-        channel_id: null,
-        begin_pubdate: '',
-        end_pubdate: ''
+        channel_id: null
+        // begin_pubdate: '',
+        // end_pubdate: ''
       },
-      rangeDate: '',
-      articles: [],
+      rangeDate: '', // 日期范围
+      articles: [], // 文章数据列表
       articleStatus: [
         {
           type: '',
@@ -167,8 +168,9 @@ export default {
         }
       ],
       totalCount: 0, // 总记录数
-      loading: true,
-      channels: []// 频道列表
+      loading: true, // 表格的loading状态
+      channels: [], // 频道列表
+      page: 1
     }
   },
 
@@ -197,9 +199,9 @@ export default {
           per_page: 10, // 默认10条每页
           // status: null
           status: this.filterForm.status,
-          channel_id: this.filterForm.channel_id
-          // begin_pubdate,
-          // end_pubdate
+          channel_id: this.filterForm.channel_id,
+          begin_pubdate: this.rangeDate ? this.rangeDate[0] : null, // 开始时间
+          end_pubdate: this.rangeDate ? this.rangeDate[1] : null// 结束时间
         }
       }).then(res => { // 成功
         console.log(res)
@@ -215,6 +217,7 @@ export default {
       })
     },
     onPageChange (page) {
+      this.page = page
       this.loadArticles(page)
     },
     loadChannels () {
@@ -225,6 +228,20 @@ export default {
         this.channels = res.data.data.channels
       }).catch(err => {
         console.log(err, '获取失败')
+      })
+    },
+    onDelete (articleId) {
+      this.$axios({
+        method: 'DELETE',
+        //  /mp/v1_0/articles/:target target为id，冒号不能写
+        url: `/articles/${articleId}`,
+        headers: {
+          Authorization: `Bearer ${window.localStorage.getItem('user-token')}`
+        }.then(res => {
+          this.loadArticles(1)
+        }).catch(err => {
+          console.log(err, '删除失败')
+        })
       })
     }
   }
