@@ -184,16 +184,16 @@ export default {
     loadArticles (page = 1) {
       this.loading = true
       // 在我们的项目中除了登录的接口不需要token，其他所有的接口都需要提供token，否者返回401错误
-      const token = window.localStorage.getItem('user-token')
+      // const token = window.localStorage.getItem('user-token')
       this.$axios({
         method: 'GET',
         url: '/articles',
-        headers: {
-        // 添加请求头
-        // 名字：后端要求把token放在请求头中使用，我们不能瞎写
-        // 注意格式要求Bearer后有个空格 用户token
-          Authorization: `Bearer ${token}`
-        },
+        // headers: {
+        // // 添加请求头
+        // // 名字：后端要求把token放在请求头中使用，我们不能瞎写
+        // // 注意格式要求Bearer后有个空格 用户token
+        //   Authorization: `Bearer ${token}`
+        // },
         params: {
           page,
           per_page: 10, // 默认10条每页
@@ -234,14 +234,13 @@ export default {
       this.$axios({
         method: 'DELETE',
         //  /mp/v1_0/articles/:target target为id，冒号不能写
-        url: `/articles/${articleId}`,
-        headers: {
-          Authorization: `Bearer ${window.localStorage.getItem('user-token')}`
-        }.then(res => {
-          this.loadArticles(1)
-        }).catch(err => {
-          console.log(err, '删除失败')
-        })
+        url: `/articles/${articleId}`
+        // headers: {
+        //   Authorization: `Bearer ${window.localStorage.getItem('user-token')}` }
+      }).then(res => {
+        this.loadArticles(1)
+      }).catch(err => {
+        console.log(err, '删除失败')
       })
     }
   }

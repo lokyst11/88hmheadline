@@ -16,7 +16,7 @@
         <quill-editor v-model="content"
                 ref="myQuillEditor"
                 :options="editorOption">
-       </quill-editor>
+        </quill-editor>
         </el-form-item>
       <el-form-item label="频道">
         <el-select placeholder="请选择频道" v-model="article.channel_id">
@@ -82,9 +82,9 @@ export default {
       this.$axios({
         method: 'POST',
         url: '/articles',
-        headers: {
-          Authorization: `Bearer ${window.localStorage.getItem('user-token')}`
-        },
+        // headers: {
+        //   Authorization: `Bearer ${window.localStorage.getItem('user-token')}`
+        // },
         params: {
           draft
         },

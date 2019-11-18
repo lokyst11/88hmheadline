@@ -19,6 +19,35 @@ axios.defaults.transformResponse = [function (data, headers) {
     return {}
   }
 }]
+
+// axios请求拦截器
+axios.interceptors.request.use(function (config) {
+  console.log('请求拦截器', config)
+  const token = window.localStorage.getItem('user-token')
+
+  // 统一添加token
+  if (token) {
+    config.headers.Authorization = `Bearer ${token}`
+  }
+  // config.headers.Authorization = `Bearer ${window.localStorage.getItem('user-token')}`
+  // 通行的规则
+  return config
+}, function (error) {
+  // Do something with request error
+  return Promise.reject(error)
+})
+
+// axios响应拦截器
+axios.interceptors.response.use(function (response) {
+  console.log('响应拦截器')
+  // Any status code that lie within the range of 2xx cause this function to trigger
+  // Do something with response data
+  return response
+}, function (error) {
+  // Any status codes that falls outside the range of 2xx cause this function to trigger
+  // Do something with response error
+  return Promise.reject(error)
+})
 Vue.prototype.$axios = axios // 共享给所有的实例使用
 
 Vue.use(ElementUI)
