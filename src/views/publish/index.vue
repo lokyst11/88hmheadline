@@ -13,7 +13,7 @@
           <!-- <el-input type="textarea" v-model="article.content"></el-input> -->
           <!-- bidirectional data binding（双向数据绑定） -->
           <!-- 富文本编辑器 -->
-        <quill-editor v-model="content"
+        <quill-editor v-model="article.content"
                 ref="myQuillEditor"
                 :options="editorOption">
         </quill-editor>

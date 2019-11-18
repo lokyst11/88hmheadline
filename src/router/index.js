@@ -32,6 +32,10 @@ const routes = [
         component: artide
       },
       {
+        path: '/publish/:articleId',
+        component: publish
+      },
+      {
         path: '/Comment',
         component: Comment
       }
