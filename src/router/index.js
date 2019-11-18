@@ -6,6 +6,7 @@ import homePage from '../views/homepage/index.vue'
 import publish from '../views/publish/index.vue'
 import artide from '../views/artide/index.vue'
 import NProgress from 'nprogress'
+import Comment from '../views/comment/index.vue'
 
 Vue.use(VueRouter)
 
@@ -29,6 +30,10 @@ const routes = [
       {
         path: '/artide',
         component: artide
+      },
+      {
+        path: '/Comment',
+        component: Comment
       }
     ]
   },
