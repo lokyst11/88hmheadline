@@ -6,6 +6,7 @@ import ElementUI from 'element-ui'
 import 'element-ui/lib/theme-chalk/index.css'
 import axios from 'axios'
 import JSONbig from 'json-bigint'
+import moment from 'moment'
 import 'nprogress/nprogress.css'
 
 // 设置axios常态地址
@@ -33,24 +34,24 @@ axios.interceptors.request.use(function (config) {
   // 通行的规则
   return config
 }, function (error) {
-  // Do something with request error
   return Promise.reject(error)
 })
 
 // axios响应拦截器
 axios.interceptors.response.use(function (response) {
   console.log('响应拦截器')
-  // Any status code that lie within the range of 2xx cause this function to trigger
-  // Do something with response data
   return response
 }, function (error) {
-  // Any status codes that falls outside the range of 2xx cause this function to trigger
-  // Do something with response error
   return Promise.reject(error)
 })
 Vue.prototype.$axios = axios // 共享给所有的实例使用
 
 Vue.use(ElementUI)
+
+// 全局过滤器:处理一些简单的文本格式化
+Vue.filter('dateFormat', value => {
+  return moment(value).format('YYYY-MM-DD')
+})
 Vue.config.productionTip = false
 
 new Vue({

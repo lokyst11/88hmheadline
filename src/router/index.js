@@ -7,6 +7,7 @@ import publish from '../views/publish/index.vue'
 import artide from '../views/artide/index.vue'
 import NProgress from 'nprogress'
 import Comment from '../views/comment/index.vue'
+import CommentList from '../views/comment-list/index.vue'
 
 Vue.use(VueRouter)
 
@@ -38,6 +39,12 @@ const routes = [
       {
         path: '/Comment',
         component: Comment
+      },
+      {
+        path: '/comment/:articleId',
+        component: CommentList,
+        // 将路由参数映射给组件props数据
+        props: true
       }
     ]
   },

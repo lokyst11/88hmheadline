@@ -107,7 +107,7 @@
           label="操作">
           <template slot-scope="scope">
             <el-button type="danger" @click="onDelete(scope.row.id)">删除</el-button>
-            <el-button type="primary" @click="$router.push('/publish/'  + scope.row.id)">编辑</el-button>
+            <el-button type="primary" @click="$router.push('/publish/' + scope.row.id)">编辑</el-button>
           </template>
         </el-table-column>
       </el-table>
@@ -175,6 +175,7 @@ export default {
   },
 
   created () {
+    console.log('article created')
     // 初始化时加载第一页数据
     this.loadArticles(1)
     // 加载频道列表

@@ -2,7 +2,7 @@
   <div class="publish">
     <el-card class="box-card">
       <div slot="header" class="clearfix">
-        <span>发布文章</span>
+        <span>{{ $route.params.articleId ? '编辑文章' : '发布文章'}}</span>
       </div>
       <!-- 内容 -->
       <el-form ref="form" :model="article" label-width="80px">
@@ -12,6 +12,7 @@
         <el-form-item label="内容">
           <!-- <el-input type="textarea" v-model="article.content"></el-input> -->
           <!-- bidirectional data binding（双向数据绑定） -->
+
           <!-- 富文本编辑器 -->
         <quill-editor v-model="article.content"
                 ref="myQuillEditor"
@@ -68,17 +69,40 @@ export default {
           type: 0, // 无图
           images: []// 无图就是空数组
         },
-        channel_id: ''
+        channel_id: []
       },
       channels: [],
       editorOption: {}// 富文本编辑器选项
     }
   },
   created () {
+    console.log('publish created')
+    // 添加和编辑都使用这组件
     this.loadChannels()
+    if (this.$route.params.articleId) {
+      this.loadArticle()
+    }
   },
   methods: {
+    loadArticle () {
+      this.$axios({
+        method: 'GET',
+        url: `/articles/${this.$route.params.articleId}`
+      }).then(res => {
+        // console.log(res.data)
+        this.article = res.data.data
+      })
+    },
     onSubmit (draft) {
+      if (this.$route.params.articleId) {
+        // 请求编辑文章
+        this.updataArticle(draft)
+      } else {
+        // 请求添加文章
+        this.addArticle(draft)
+      }
+    },
+    addArticle (draft) {
       this.$axios({
         method: 'POST',
         url: '/articles',
@@ -92,8 +116,33 @@ export default {
         data: this.article
       }).then(res => {
         console.log(res)
+        this.$message({
+          type: 'success',
+          message: '更新成功'
+        })
       }).catch(err => {
         console.log(err, '保存失败')
+        this.$message.error('更新失败')
+      })
+    },
+    updataArticle (draft) {
+      this.$axios({
+        method: 'PUT',
+        url: `/articles/${this.$route.params.articleId}`,
+        // jQuery参数
+        params: {
+          draft
+        },
+        // body
+        data: this.article
+      }).then(res => {
+        this.$message({
+          type: 'success',
+          message: '更新成功'
+        })
+      }).catch(err => {
+        console.log(err)
+        this.$message.error('更新失败')
       })
     },
     loadChannels () {
