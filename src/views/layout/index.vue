@@ -31,7 +31,7 @@
         <el-menu-item>粉丝列表</el-menu-item>
       </el-submenu>
       <!-- 一级菜单 -->
-      <el-menu-item>账户信息</el-menu-item>
+      <el-menu-item index='/Account'>账户信息</el-menu-item>
      </el-menu>
    </el-aside>
    <!-- 大容器包含头部和中间 -->
