@@ -23,8 +23,12 @@
               >
               <el-button size="small" type="primary">点击上传</el-button>
             </el-upload>
+            <el-button size="small" style="float:right; margin-right:10px;" type="success" @click="onUpload">自己请求上传图片</el-button>
+
+            <!-- 当选择文件发生改变是触发change事件 -->
+            <input type="file" hidden ref="file" @change="onFileChange">
         </div>
-        <div>
+        <div style="margin-bottom:20px;">
             <el-radio-group v-model="type" @change="onFind">
             <el-radio-button label="全部"></el-radio-button>
             <el-radio-button label="收藏"></el-radio-button>
@@ -145,6 +149,31 @@ export default {
     onUploadSuccess () {
       // 刷新图片列表
       this.loadImages(this.type !== '全部')
+    },
+
+    onUpload () {
+      // 手动触发 DOM点击事件
+      this.$refs.file.click()
+    },
+    onFileChange () {
+      // 获取用户选择的那个文件对象
+      const fileObj = this.$refs.file.files[0]
+      const formData = new FormData()
+      formData.append('image', fileObj)
+      // 请求上传
+      this.$axios({
+        method: 'POST',
+        url: '/user/images',
+        // multipart/form-data:常用于文件上传
+        data: formData
+      }).then(res => {
+        console.log(res)
+        // 刷新图片列表
+        this.loadImages(this.type !== '全部')
+      }).catch(err => {
+        console.log(err)
+        this.$message.error('上传失败')
+      })
     }
   }
 }
