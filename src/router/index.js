@@ -8,6 +8,7 @@ import artide from '../views/artide/index.vue'
 import NProgress from 'nprogress'
 import Comment from '../views/comment/index.vue'
 import CommentList from '../views/comment-list/index.vue'
+import Media from '../views/media/index.vue'
 
 Vue.use(VueRouter)
 
@@ -45,6 +46,10 @@ const routes = [
         component: CommentList,
         // 将路由参数映射给组件props数据
         props: true
+      },
+      {
+        path: '/Media',
+        component: Media
       }
     ]
   },
