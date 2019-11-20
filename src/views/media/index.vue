@@ -3,7 +3,26 @@
       <el-card class="box-card">
         <div slot="header" class="clearfix">
             <span>素材管理</span>
-            <el-button style="float: right; padding: 3px 0" type="text">上传图片</el-button>
+
+            <!-- action:上传文件的请求地址
+            on-preview：上传预览事件
+            on-remove：删除事件
+            这个上传组件能帮我们自动发送请求，我们只需要配置参数
+            上传组件内部会自己发送请求
+            默认POST请求方法
+            手动配置请求头
+             -->
+            <el-upload
+              style="float: right; padding: 3px 0"
+              class="upload-demo"
+              action="http://ttapi.research.itcast.cn/mp/v1_0/user/images"
+              :headers="uploadHeaders"
+              name="image"
+              :on-success="onUploadSuccess"
+              :show-file-list="false"
+              >
+              <el-button size="small" type="primary">点击上传</el-button>
+            </el-upload>
         </div>
         <div>
             <el-radio-group v-model="type" @change="onFind">
@@ -32,12 +51,17 @@
 </template>
 
 <script>
+const token = window.localStorage.getItem('user-token')
 export default {
   name: 'MediaIndex',
   data () {
     return {
       images: [],
-      type: '全部'
+      type: '全部',
+      // 给上传组件使用的请求头
+      uploadHeaders: {
+        Authorization: `Bearer ${token}`
+      }
     }
   },
   created () {
@@ -115,6 +139,12 @@ export default {
           message: '已取消删除'
         })
       })
+    },
+
+    // upload组件上传成功触发事件
+    onUploadSuccess () {
+      // 刷新图片列表
+      this.loadImages(this.type !== '全部')
     }
   }
 }
