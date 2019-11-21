@@ -10,6 +10,7 @@ import Comment from '../views/comment/index.vue'
 import CommentList from '../views/comment-list/index.vue'
 import Media from '../views/media/index.vue'
 import Account from '../views/account/index.vue'
+import EchartsDemo from '../views/echart/demo.vue'
 
 Vue.use(VueRouter)
 
@@ -55,6 +56,10 @@ const routes = [
       {
         path: '/Account',
         component: Account
+      },
+      {
+        path: '/EchartsDemo',
+        component: EchartsDemo
       }
     ]
   },
