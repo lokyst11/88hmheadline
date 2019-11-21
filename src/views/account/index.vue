@@ -41,6 +41,7 @@
 </template>
 
 <script>
+import eventBus from '../../utils/event-bus'
 export default {
   name: 'AccountIndex',
   components: {},
@@ -80,6 +81,7 @@ export default {
           intro
         }
       }).then(res => {
+        eventBus.$emit('abc', this.user)
         this.$message({
           type: 'success',
           message: '修改成功'
@@ -112,6 +114,8 @@ export default {
       }).then(res => {
         // 更新图片地址
         this.user.photo = res.data.data.photo
+        // 同步头像
+        eventBus.$emit('abc', this.user)
       }).catch(err => {
         console.log(err)
         this.$message.error('上传失败')

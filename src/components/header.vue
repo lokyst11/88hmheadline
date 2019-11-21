@@ -12,10 +12,10 @@
     <!-- 右侧 -->
     <el-col :span="3" class="right">
         <!-- 头像 -->
-        <img src="../img/avatar.jpg" alt="">
+        <img width="50" :src="user.photo" alt="">
         <!-- 下拉菜单 -->
         <el-dropdown trigger="click">
-            <span>童鑫</span>
+            <span>{{ user.name }}</span>
             <el-dropdown-menu slot="dropdown">
                 <el-dropdown-item>账户信息</el-dropdown-item>
                 <el-dropdown-item>git地址</el-dropdown-item>
@@ -28,8 +28,37 @@
 </template>
 
 <script>
+import eventBus from '../../src/utils/event-bus'
 export default {
+  data () {
+    return {
+      user: {
+        name: '',
+        photo: ''
+      }
+    }
+  },
+  created () {
+    this.loadUser()
+    eventBus.$on('abc', user => {
+      // 业务逻辑代码
+      console.log('abc 调用了')
+      this.user.name = user.name
+      this.user.photo = user.photo
+    })
+  },
   methods: {
+    loadUser () {
+      this.$axios({
+        method: 'GET',
+        url: '/user/profile'
+      }).then(res => {
+        this.user = res.data.data
+      }).catch(err => {
+        console.log(err)
+        this.$message.error('获取数据失败')
+      })
+    },
     onLogout () {
       this.$confirm('确定退出吗？', {
         confirmButtonText: '确定',
