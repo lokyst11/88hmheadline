@@ -1,8 +1,9 @@
 <template>
   <div class="upload-image">
       <div class="preview" @click="onUploadShow">
-      <!-- <img src="" class="avatar"> -->
-      <i class="el-icon-plus avatar-uploader-icon"></i>
+          <!-- 有图片显示图片没有显示加号 -->
+      <img v-if="value" :src="value" class="avatar">
+      <i v-else class="el-icon-plus avatar-uploader-icon"></i>
       </div>
       <el-dialog
         title="请选择文章封面图片"
@@ -11,14 +12,15 @@
         center>
         <!-- 标签导航 -->
         <!-- el-tabs：双向绑定 -->
-          <el-tabs v-model="activeName" @tab-click="handleClick">
+          <el-tabs v-model="activeName">
             <el-tab-pane label="素材库" name="first">
                 <el-radio-group v-model="activeImage" @change="loadImages">
                     <el-radio label="all">全部</el-radio>
                     <el-radio label="collect">收藏</el-radio>
                 </el-radio-group>
                 <el-row :gutter="20">
-                    <el-col :span="6" v-for="item in images" :key="item.id">
+                    <el-col :class="{'img-item':index===activeIndex}" :span="6"
+                    v-for="(item,index) in images" :key="item.id" @click.native="activeIndex=index">
                         <img height="100" :src="item.url">
                     </el-col>
                 </el-row>
@@ -27,7 +29,7 @@
         </el-tabs>
         <span slot="footer" class="dialog-footer">
             <el-button @click="centerDialogVisible = false">取 消</el-button>
-            <el-button type="primary" @click="centerDialogVisible = false">确 定</el-button>
+            <el-button type="primary" @click="onConfirm">确 定</el-button>
         </span>
        </el-dialog>
   </div>
@@ -37,14 +39,20 @@
 export default {
   name: 'UploadImage',
   components: {},
-  props: {},
+  props: {
+    value: {
+      type: String
+    }
+  },
   data () {
     return {
       // 对话框显示或隐藏
       centerDialogVisible: false,
       activeName: 'first', // 激活的标签页
       activeImage: 'all', // 激活的图片筛选类型
-      images: []
+      images: [],
+      activeIndex: null,
+      previewImage: ''
     }
   },
   computed: {},
@@ -71,6 +79,18 @@ export default {
       }).catch(() => {
 
       })
+    },
+    // 对话框确定时
+    onConfirm () {
+      const image = this.images[this.activeIndex]
+      if (image) {
+        //   将选中的图片赋值给previewImage
+        // this.previewImage = image.url
+        // 同步给父组件绑定的数据
+        this.$emit('input', image.url)
+      }
+      //   关闭对话框
+      this.centerDialogVisible = false
     }
   }
 }
@@ -101,5 +121,8 @@ export default {
   width: 178px;
   height: 178px;
   display: block;
+}
+.img-item{
+    border: 1px solid #000;
 }
 </style>
