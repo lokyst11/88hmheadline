@@ -85,8 +85,8 @@ export default {
       }).then(res => {
         this.articles = res.data.data.results
         this.totalCount = res.data.data.total_count
-      }).catch(err => {
-        console.log(err, '失败')
+      }).catch(() => {
+        // console.log(err, '失败')
       }).finally(() => {
         // 无论成功失败最终都要执行
         this.loading = false
@@ -104,13 +104,13 @@ export default {
           allow_comment: article.comment_status
         }
       }).then(res => {
-        console.log(res)
+        // console.log(res)
         this.$message({
           type: 'success',
           message: `${article.comment_status ? '启用' : '关闭'}成功`
         })
-      }).catch(err => {
-        console.log(err)
+      }).catch(() => {
+        // console.log(err)
         this.$message.error('失败')
       })
     },

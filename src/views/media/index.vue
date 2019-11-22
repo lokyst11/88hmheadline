@@ -167,11 +167,11 @@ export default {
         // multipart/form-data:常用于文件上传
         data: formData
       }).then(res => {
-        console.log(res)
+        // console.log(res)
         // 刷新图片列表
         this.loadImages(this.type !== '全部')
-      }).catch(err => {
-        console.log(err)
+      }).catch(() => {
+        // console.log(err)
         this.$message.error('上传失败')
       })
     }

@@ -71,7 +71,7 @@ export default {
             data: this.loginForm,
             method: 'post'
           }).then(result => {
-            console.log(result)
+            // console.log(result)
             window.localStorage.setItem('user-token', result.data.data.token)
             this.$router.push('/layout')
           }).catch(() => {

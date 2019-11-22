@@ -17,7 +17,7 @@
         <el-dropdown trigger="click">
             <span>{{ user.name }}</span>
             <el-dropdown-menu slot="dropdown">
-                <el-dropdown-item>账户信息</el-dropdown-item>
+                <el-dropdown-item @click.native="onXinxi">账户信息</el-dropdown-item>
                 <el-dropdown-item>git地址</el-dropdown-item>
                 <!-- 给组件注册原生js，使用.native修饰符 -->
                 <el-dropdown-item @click.native="onLogout">退出</el-dropdown-item>
@@ -42,7 +42,7 @@ export default {
     this.loadUser()
     eventBus.$on('abc', user => {
       // 业务逻辑代码
-      console.log('abc 调用了')
+      // console.log('abc 调用了')
       this.user.name = user.name
       this.user.photo = user.photo
     })
@@ -54,8 +54,8 @@ export default {
         url: '/user/profile'
       }).then(res => {
         this.user = res.data.data
-      }).catch(err => {
-        console.log(err)
+      }).catch(() => {
+        // console.log(err)
         this.$message.error('获取数据失败')
       })
     },
@@ -77,6 +77,10 @@ export default {
           message: '已取消退出'
         })
       })
+    },
+    onXinxi () {
+      // 跳转页面
+      this.$router.push('/Account')
     }
   }
 }

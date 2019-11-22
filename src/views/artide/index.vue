@@ -175,7 +175,7 @@ export default {
   },
 
   created () {
-    console.log('article created')
+    // console.log('article created')
     // 初始化时加载第一页数据
     this.loadArticles(1)
     // 加载频道列表
@@ -205,13 +205,13 @@ export default {
           end_pubdate: this.rangeDate ? this.rangeDate[1] : null// 结束时间
         }
       }).then(res => { // 成功
-        console.log(res)
+        // console.log(res)
         // 更新文章列表数组
         this.articles = res.data.data.results
         // 更新总记录数
         this.totalCount = res.data.data.total_count
-      }).catch(err => { // 失败
-        console.log(err, '获取数据失败')
+      }).catch(() => { // 失败
+        // console.log(err, '获取数据失败')
       }).finally(() => {
         // 无论成功失败最终都要执行
         this.loading = false
@@ -227,8 +227,8 @@ export default {
         url: '/channels'
       }).then(res => {
         this.channels = res.data.data.channels
-      }).catch(err => {
-        console.log(err, '获取失败')
+      }).catch(() => {
+        // console.log(err, '获取失败')
       })
     },
     onDelete (articleId) {
@@ -240,8 +240,8 @@ export default {
         //   Authorization: `Bearer ${window.localStorage.getItem('user-token')}` }
       }).then(res => {
         this.loadArticles(1)
-      }).catch(err => {
-        console.log(err, '删除失败')
+      }).catch(() => {
+        // console.log(err, '删除失败')
       })
     }
   }

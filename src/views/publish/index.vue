@@ -30,12 +30,21 @@
         </el-option>
         </el-select>
       </el-form-item>
-        <!-- <el-form-item label="封面">
-          <el-radio-group v-model="form.resource">
-            <el-radio label="线上品牌商赞助"></el-radio>
-            <el-radio label="线下场地免费"></el-radio>
+        <el-form-item label="封面">
+          <el-radio-group v-model="article.cover.type">
+            <el-radio :label="1">单图</el-radio>
+            <el-radio :label="3">三图</el-radio>
+            <el-radio :label="0">无图</el-radio>
+            <el-radio :label="-1">自动</el-radio>
           </el-radio-group>
-        </el-form-item> -->
+          <template v-if="article.cover.type > 0">
+            <el-row :gutter="20">
+              <el-col :span="4" v-for="item in article.cover.type" :key="item">
+                <UploadImage></UploadImage>
+              </el-col>
+            </el-row>
+          </template>
+        </el-form-item>
         <el-form-item>
           <el-button type="primary" @click="onSubmit(false)">发表</el-button>
           <el-button @click="onSubmit(true)">存入草稿</el-button>
@@ -54,11 +63,15 @@ import 'quill/dist/quill.bubble.css'
 // 加载富文本编辑器的核心组件
 import { quillEditor } from 'vue-quill-editor'
 
+// 1.加载
+import UploadImage from './components/up-load'
+
 export default {
   name: 'publishArticle',
   components: {
     // 注册局部组件
-    quillEditor
+    quillEditor,
+    UploadImage
   },
   data () {
     return {
@@ -66,17 +79,18 @@ export default {
         title: '', // 文章标题
         content: '', // 文章内容
         cover: {
-          type: 0, // 无图
+          type: 1, // 无图
           images: []// 无图就是空数组
         },
         channel_id: []
       },
       channels: [],
-      editorOption: {}// 富文本编辑器选项
+      editorOption: {} // 富文本编辑器选项
+      // imageCount: 1
     }
   },
   created () {
-    console.log('publish created')
+    // console.log('publish created')
     // 添加和编辑都使用这组件
     this.loadChannels()
     if (this.$route.params.articleId) {
@@ -115,13 +129,15 @@ export default {
         // 与article里面的参数一样，就可以这么写
         data: this.article
       }).then(res => {
-        console.log(res)
+        // console.log(res)
         this.$message({
           type: 'success',
           message: '更新成功'
         })
-      }).catch(err => {
-        console.log(err, '保存失败')
+        // 更新成功后跳转页面
+        this.$router.push('/artide')
+      }).catch(() => {
+        // console.log(err, '保存失败')/
         this.$message.error('更新失败')
       })
     },
@@ -140,8 +156,8 @@ export default {
           type: 'success',
           message: '更新成功'
         })
-      }).catch(err => {
-        console.log(err)
+      }).catch(() => {
+        // console.log(err)
         this.$message.error('更新失败')
       })
     },
@@ -151,8 +167,8 @@ export default {
         url: '/channels'
       }).then(res => {
         this.channels = res.data.data.channels
-      }).catch(err => {
-        console.log(err, '获取失败')
+      }).catch(() => {
+        // console.log(err, '获取失败')
       })
     }
   }

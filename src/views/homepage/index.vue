@@ -1,5 +1,10 @@
 <template>
-  <div>首页</div>
+  <div>
+    <div>
+      <!-- 主页 -->
+      <img src="../../img/323795.jpg" alt="">
+    </div>
+  </div>
 </template>
 
 <script>

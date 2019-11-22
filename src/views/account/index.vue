@@ -68,7 +68,7 @@ export default {
       // const email=this.user.email
       // const intro=this.user.intro
       const { name, email, intro } = this.user
-      console.log('保存')
+      // console.log('保存')
       this.$axios({
         method: 'PATCH',
         url: '/user/profile',
@@ -86,8 +86,8 @@ export default {
           type: 'success',
           message: '修改成功'
         })
-      }).catch(err => {
-        console.log(err)
+      }).catch(() => {
+        // console.log(err)
         this.$message.error('修改失败')
       })
     },
@@ -96,10 +96,10 @@ export default {
         method: 'GET',
         url: '/user/profile'
       }).then(res => {
-        console.log(res)
+        // console.log(res)
         this.user = res.data.data
-      }).catch(err => {
-        console.log(err)
+      }).catch(() => {
+        // console.log(err)
         this.$message.error('获取失败')
       })
     },
@@ -116,8 +116,8 @@ export default {
         this.user.photo = res.data.data.photo
         // 同步头像
         eventBus.$emit('abc', this.user)
-      }).catch(err => {
-        console.log(err)
+      }).catch(() => {
+        // console.log(err)
         this.$message.error('上传失败')
       })
     }

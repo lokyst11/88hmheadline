@@ -25,7 +25,7 @@
         <!-- 具名插槽 -->
         <template slot="title">粉丝管理</template>
         <!-- 匿名插槽 -->
-        <el-menu-item>图文数据</el-menu-item>
+        <el-menu-item index='/EchartsDemo'>图文数据</el-menu-item>
         <el-menu-item>粉丝概况</el-menu-item>
         <el-menu-item>粉丝画像</el-menu-item>
         <el-menu-item>粉丝列表</el-menu-item>

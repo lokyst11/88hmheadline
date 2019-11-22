@@ -108,7 +108,7 @@ export default {
           source: this.articleId// 文章id
         }
       }).then(res => {
-        console.log(res)
+        // console.log(res)
         const comments = res.data.data.results
         comments.forEach(item => {
           // moment(指定时间)，format(格式)
@@ -117,8 +117,8 @@ export default {
         })
         // 将处理后的数据更新
         this.comments = comments
-      }).catch(err => {
-        console.log(err)
+      }).catch(() => {
+        // console.log(err)
         this.$message.error('失败')
       })
     },
