@@ -25,7 +25,16 @@
                     </el-col>
                 </el-row>
             </el-tab-pane>
-            <el-tab-pane label="上传图片" name="second">配置管理</el-tab-pane>
+            <el-tab-pane label="上传图片" name="second">
+              <el-upload
+                action="http://ttapi.research.itcast.cn/mp/v1_0/user/images"
+                :headers="uploadHeaders"
+                name="image"
+                list-type="picture-card"
+                :on-preview="onPreview">
+                <i class="el-icon-plus"></i>
+              </el-upload>
+            </el-tab-pane>
         </el-tabs>
         <span slot="footer" class="dialog-footer">
             <el-button @click="centerDialogVisible = false">取 消</el-button>
@@ -41,10 +50,12 @@ export default {
   components: {},
   props: {
     value: {
+      // 选择预览的图片地址
       type: String
     }
   },
   data () {
+    const token = window.localStorage.getItem('user-token')
     return {
       // 对话框显示或隐藏
       centerDialogVisible: false,
@@ -52,6 +63,9 @@ export default {
       activeImage: 'all', // 激活的图片筛选类型
       images: [],
       activeIndex: null,
+      uploadHeaders: {
+        Authorization: `Bearer ${token}`
+      },
       previewImage: ''
     }
   },
@@ -82,15 +96,26 @@ export default {
     },
     // 对话框确定时
     onConfirm () {
-      const image = this.images[this.activeIndex]
-      if (image) {
+      if (this.activeName === 'first') {
+        const image = this.images[this.activeIndex]
+        if (image) {
         //   将选中的图片赋值给previewImage
         // this.previewImage = image.url
         // 同步给父组件绑定的数据
-        this.$emit('input', image.url)
+          this.$emit('input', image.url)
+        }
+      } else if (this.activeName === 'second') {
+        const previewImage = this.previewImage
+        if (previewImage) {
+          this.$emit('input', previewImage)
+        }
       }
       //   关闭对话框
       this.centerDialogVisible = false
+    },
+    onPreview (file) {
+      // console.log(file)
+      this.previewImage = file.response.data.url
     }
   }
 }
